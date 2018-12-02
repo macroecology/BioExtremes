@@ -1,0 +1,5 @@
+default:
+  ftp:
+    host: "sftp://"
+    username: 
+    password: 
