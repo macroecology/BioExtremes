@@ -13,7 +13,7 @@ library(RCurl)
 url <- paste (ftp_host, "/ftpuser0063/", sep="")
 userpwd <- paste (ftp_user, ftp_password, sep=":")
 filenames <- getURL(url, userpwd = userpwd,
-                    ftp.use.epsv = FALSE,dirlistonly = TRUE) 
+                    ftp.use.epsv = FALSE, dirlistonly = TRUE) 
 
 filenames <- strsplit(filenames, '\n') ## 
 
