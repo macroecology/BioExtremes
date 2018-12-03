@@ -1,0 +1,104 @@
+File CMIP5_OceanData/Historical/tos_day_GFDL-CM3_historical_r1i1p1_19950101-19991231.nc (NC_FORMAT_64BIT):
+  
+  9 variables (excluding dimension variables):
+  double time_bnds[bnds,time]   
+long_name: time axis boundaries
+units: days since 1860-01-01 00:00:00
+double average_T1[time]   
+long_name: Start time for average period
+units: days since 1860-01-01 00:00:00
+double average_T2[time]   
+long_name: End time for average period
+units: days since 1860-01-01 00:00:00
+double average_DT[time]   
+long_name: Length of average period
+units: days
+float tos[rlon,rlat,time]   
+missing_value: 1.00000002004088e+20
+original_name: sst + 273.15
+cell_methods: time: mean
+valid_range: 263
+valid_range: 373
+units: K
+long_name: Sea Surface Temperature
+coordinates: lat lon
+_FillValue: 1.00000002004088e+20
+standard_name: surface_temperature
+cell_measures: area: areacello
+comments: Note: This model output is presented on the model's tripolar grid. The North Pole singularity is avoided by using this nonregular grid north of 65N. More information about the ocean and sea ice model's grid can be found at http://nomads.gfdl.noaa.gov/.
+associated_files: baseURL: http://cmip-pcmdi.llnl.gov/CMIP5/dataLocation gridspecFile: gridspec_ocean_fx_GFDL-CM3_historical_r0i0p0.nc areacello: areacello_fx_GFDL-CM3_historical_r0i0p0.nc
+original_units: K
+float lat[rlon,rlat]   
+long_name: latitude coordinate
+units: degrees_north
+standard_name: latitude
+bounds: lat_vertices
+double lat_vertices[vertices,rlon,rlat]   
+units: degrees_north
+float lon[rlon,rlat]   
+long_name: longitude coordinate
+units: degrees_east
+standard_name: longitude
+bounds: lon_vertices
+double lon_vertices[vertices,rlon,rlat]   
+units: degrees_east
+
+5 dimensions:
+  time  Size:1825   *** is unlimited ***
+  long_name: time
+units: days since 1860-01-01 00:00:00
+cartesian_axis: T
+calendar_type: noleap
+calendar: noleap
+bounds: time_bnds
+standard_name: time
+axis: T
+rlon  Size:360
+long_name: longitude in rotated pole grid
+units: degrees
+axis: X
+standard_name: grid_longitude
+rlat  Size:200
+long_name: latitude in rotated pole grid
+units: degrees
+axis: Y
+standard_name: grid_latitude
+bnds  Size:2
+long_name: vertex number
+cartesian_axis: N
+vertices  Size:4
+
+27 global attributes:
+  title: NOAA GFDL GFDL-CM3, historical (run 1) experiment output for CMIP5 AR5
+institute_id: NOAA GFDL
+source: GFDL-CM3 2010 atmosphere: AM3 (AM3p9,C48L48); sea ice: SIS (SISp2,Tripolar360x200); land: LM3 (LM3p7_cCM3,C48); ocean: MOM4 (MOM4p1_x1_Z50_cCM3,Tripolar360x200L50)
+contact: gfdl.climate.model.info@noaa.gov
+project_id: CMIP5
+table_id: Table day (31 Jan 2011)
+experiment_id: historical
+realization: 1
+modeling_realm: ocean
+tracking_id: 8d8f96e0-0446-4c4a-a120-c87f5da1f10c
+Conventions: CF-1.4
+references: The GFDL Data Portal (http://nomads.gfdl.noaa.gov/) provides access to NOAA/GFDL's publicly available model input and output data sets. From this web site one can view and download data sets and documentation, including those related to the GFDL coupled models experiments run for the IPCC's 5th Assessment Report and the US CCSP.
+comment: GFDL experiment name: CM3Z_D1_1860-2005_AllForc_H1
+GFDL parent experiment name: CM3Z_Control-1860_D1
+CMIP5 experiment ID: historical
+Initial conditions from this experiment (CMIP5 expt. 3.2 Core) were taken from 01Jan0001 of the 1860 control model experiment CM3Z_Control-1860_D1.
+Forcing agents (7 WMGGs, tropospheric and stratospheric ozone, land use, volcanoes, solar, sulfate, black carbon,
+                organic carbon, dust, and sea salt) vary historically from 1860-2005 following prescribed emission or concentration
+timeseries or internally calculated emissions. This model includes direct and indirect aerosol effects.
+gfdl_experiment_name: CM3Z_D1_1860-2005_AllForc_H1
+creation_date: 2012-01-13T17:47:23Z
+model_id: GFDL-CM3
+branch_time: 0.0
+experiment: historical
+forcing: GHG,SA,Oz,LU,Sl,Vl,SS,BC,MD,OC (GHG includes CO2, CH4, N2O, CFC11, CFC12, HCFC22, CFC113)
+frequency: day
+initialization_method: 1
+parent_experiment_id: piControl
+physics_version: 1
+product: output1
+institution: NOAA GFDL(201 Forrestal Rd, Princeton, NJ, 08540)
+history: File was processed by fremetar (GFDL analog of CMOR). TripleID: [exper_id_1XhP9uft45,realiz_id_4e0zLckGg3,run_id_HhaU8NYVBh]
+parent_experiment_rip: r1i1p1
