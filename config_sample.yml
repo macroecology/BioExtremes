@@ -2,4 +2,8 @@ default:
   ftp:
     host: "sftp://"
     username: 
-    password: 
+    password:
+  cluster:
+    host:
+    username:
+    password:
