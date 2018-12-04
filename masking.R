@@ -31,4 +31,5 @@ oceanmask <- function(map, cellsize){
   mask
 }
 
-mask <- landmask(land,0.5)
+l <- landmask(land,0.5)
+o <- oceanmask(land,0.5)
