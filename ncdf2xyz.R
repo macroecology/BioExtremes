@@ -1,10 +1,12 @@
 mat2xyz <- function(mat, lon, lat){
+  #Takes a variable matrix and 2 dimensions vectors and output a XYZ dataframe
   lonlat = expand.grid(lon, lat)
   sst = as.vector(mat)
   data.frame(x=lonlat[,1], y=lonlat[,2], z=sst)
 }
 
 ncdf2xyz <- function(file){
+  #Beware: this version is only adapted to CMIP5 historical data format.
   require(ncdf4)
   require(raster)
   nc = nc_open(file)
