@@ -13,6 +13,7 @@ lon = ncvar_get(nc,"rlon")
 lonlat = expand.grid(lon, lat)
 sst = as.vector(tos)
 sst.mat = matrix(sst, nrow = length(lon)*length(lat), ncol = length(time))
+#sst.mat = matrix(sst, nrow = length(lon)*length(lat)*length(time),ncol=1)
 by_day = apply(sst.mat, 2, function(x) as.data.frame(cbind(lonlat, x)))
 
 colnm = c("x","y","z")
