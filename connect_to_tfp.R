@@ -36,3 +36,18 @@ for (filename in filenames) {
     writeBin(bin, paste0(getwd(), "/", filename))
 #  }
 }
+
+
+#create dummy file for test upload
+upload.file <- "dummy"
+write(upload.file, file="test_clim_dat.txt")
+write(upload.file, file="test_clim_dat2.txt")
+
+# adjust regex to unique filename characters
+upload.files <- dir()[grep("clim_dat", dir())]
+
+for (filename in upload.files) {
+  ftpUpload(I(filename), 
+            paste0("ftp://", userpwd, "@", "ftp.naturkundemuseum-berlin.de/",
+                   ftp_user, "/", foldernames[grep("hackathon", foldernames)], "/", filename))
+}
