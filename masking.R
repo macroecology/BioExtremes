@@ -5,7 +5,7 @@ mask <- function(cellsize, which){
   require(rgdal)
   download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_land.zip","ne_110m_land.zip")
   unzip("ne_110m_land.zip")
-  land <- readOGR(".","ne_110m_land")
+  map <- readOGR(".","ne_110m_land")
   unlink(dir(".",pattern="ne_110m"))
   gridlat <- seq(-90,90,cellsize)
   gridlon <- seq(-180,180,cellsize)
