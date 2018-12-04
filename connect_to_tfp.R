@@ -11,15 +11,28 @@ ftp_password = config::get("ftp")$password
 
 library(RCurl)
 url <- paste (ftp_host, "/ftpuser0063/", sep="")
+
 userpwd <- paste (ftp_user, ftp_password, sep=":")
-filenames <- getURL(url, userpwd = userpwd,
-                    ftp.use.epsv = FALSE, dirlistonly = TRUE) 
 
-filenames <- strsplit(filenames, '\n') ## 
 
-filenames = unlist(filenames)
+foldernames <- getURL(url, userpwd = userpwd,
+                    ftp.use.epsv = FALSE, dirlistonly=TRUE) # downloads folder names
 
+foldernames <- strsplit(foldernames, '\n')
+foldernames <- unlist(foldernames)
+
+filenames <- getURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/"),
+                    userpwd = userpwd,
+                    ftp.use.epsv = FALSE, dirlistonly=TRUE) 
+filenames <- strsplit(filenames, '\n')
+filenames <- unlist(filenames)
+
+
+# adjust foldernames, currently set to hackthon variables
 for (filename in filenames) {
-  download.file(paste(url, filename, sep = ""), paste(getwd(), "/", filename,
-                                                      sep = ""))
+  bin <- getBinaryURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/", filename),
+                      userpwd=userpwd) 
+#  if(any(grepl(".nc", dir()))){
+    writeBin(bin, paste0(getwd(), "/", filename))
+#  }
 }
