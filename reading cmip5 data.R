@@ -1,3 +1,5 @@
+#SANDBOX (to be erased)
+
 library(ncdf4)
 library(raster)
 source("masking.R")
