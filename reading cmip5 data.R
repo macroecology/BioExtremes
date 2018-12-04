@@ -13,15 +13,18 @@ lon = ncvar_get(nc,"rlon")
 lonlat = expand.grid(lon, lat)
 sst = as.vector(tos)
 sst.mat = matrix(sst, nrow = length(lon)*length(lat), ncol = length(time))
-sst.df = data.frame(cbind(lonlat, sst.mat))
+#sst.df = data.frame(cbind(lonlat, sst.mat))
+sst.df = data.frame(cbind(lonlat, sst.mat[,1]))
+#by_day = apply(sst_df[,-(1:2)], 2, function(x) cbind(lonlat, x))
 
-by_day = apply(sst_df[,-(1:2)], 2, function(x) cbind(lonlat, x))
 colnm = c("x","y","z")
-for (j in seq_along(by_day)){
-  colnames(by_day[[j]]) <- colnm
-}
+#for (j in seq_along(by_day)){
+#  colnames(by_day[[j]]) <- colnm
+#}
+colnames(sst.df)<-colnm
 
-by_day_rstr = lapply(by_day, function(x) rasterFromXYZ(x))
+#by_day_rstr = lapply(by_day, function(x) rasterFromXYZ(x))
+by_day_rstr = rasterize(sst.df,m)
 m = mask(0.5,"ocean")
 ## Use resample command to regrid the data, here nearest neighbor method can also be chosen by setting method = "ngb"
 regridded = lapply(by_day_rstr, function(x) resample(x, m, method = "bilinear"))
