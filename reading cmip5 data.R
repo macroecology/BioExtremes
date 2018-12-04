@@ -24,4 +24,5 @@ m = mask(0.5,"ocean")
 ## Use resample command to regrid the data, here nearest neighbor method can also be chosen by setting method = "ngb"
 #regridded = lapply(by_day_rstr, function(x) resample(x, m, method = "bilinear"))
 
-day_one <- as.data.frame(cbind(lonlat, sst.mat[,1])) #doesn t work: Error: cannot allocate vector of size 49.2 Gb
+day_one <- as.data.frame(cbind(lonlat, sst.mat[,1])) 
+r <- rasterize(day_one[,1:2],m,day_one$z)#doesn t work: Error: cannot allocate vector of size 49.2 Gb
