@@ -1,4 +1,5 @@
-landmask <- function(mapfolder, mapfile, cellsize){ #Take a shapefile with land masses and make a landmask at the desired resolution
+landmask <- function(mapfolder, mapfile, cellsize){ 
+  #Take a shapefile with land masses and make a landmask at the desired resolution
   require(raster)
   require(rgdal)
   gridlat <- seq(-90,90,cellsize)

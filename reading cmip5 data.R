@@ -3,6 +3,8 @@ file = "CMIP5_OceanData/Historical/tos_day_GFDL-CM3_historical_r1i1p1_19950101-1
 nc = nc_open(file)
 tos = ncvar_get(nc, "tos")
 time = ncvar_get(nc,"time")
-time = as.Date(time, origin="1860-01-01")
+u = ncatt_get(nc,"time")$units
+origin = el(regmatches(u,gregexpr("[0-9-]{10}",u)))
+time = as.Date(time, origin)
 lat = ncvar_get(nc,"rlat")
 lon = ncvar_get(nc,"rlon")
