@@ -1,41 +1,41 @@
+setwd ("C:\\Users\\sara.varela\\Documents\\CIENCIAS\\BioExtreme")
+foldername<- "anomalies_land"
+
+download ("present_baseline", "present_baseline")
+
+## both parameters are character 
+
+download<- function (foldername, saving_folder){
+  
 library(config)
 ftp_host = config::get("ftp")$host
 ftp_user = config::get("ftp")$username
 ftp_password = config::get("ftp")$password
 
-
-## 2 tickets: 
-## A: download a set of climatic layers stored in the FTP
-## B: save a file in a defined folder in the FTP
-
 options(timeout=300)
 library(RCurl)
 url <- paste (ftp_host, "/ftpuser0063/", sep="")
-
 userpwd <- paste (ftp_user, ftp_password, sep=":")
 
-
-foldernames <- getURL(url, userpwd = userpwd,
-                    ftp.use.epsv = FALSE, dirlistonly=TRUE) # downloads folder names
-
-foldernames <- strsplit(foldernames, '\n')
-foldernames <- unlist(foldernames)
-
-filenames <- getURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/"),
+filenames <- getURL(paste0(url, foldername, "/"),
                     userpwd = userpwd,
                     ftp.use.epsv = FALSE, dirlistonly=TRUE) 
+
 filenames <- strsplit(filenames, '\n')
 filenames <- unlist(filenames)
-
-
+filenames <- filenames [-c(1:2)]
 # adjust foldernames, currently set to hackthon variables
+dir.create (paste0(getwd(), "/data/", saving_folder))
 for (filename in filenames) {
-  bin <- getBinaryURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/", filename),
+  bin <- getBinaryURL(paste0(url, foldername, "/", filename),
                       userpwd=userpwd) 
 #  if(any(grepl(".nc", dir()))){
-    writeBin(bin, paste0(getwd(), "/", filename))
+    writeBin(bin, paste0(getwd(), "/data/", saving_folder, "/", filename))
 #  }
 }
+}
+
+
 
 
 #create dummy file for test upload
