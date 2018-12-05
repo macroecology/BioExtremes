@@ -1,4 +1,4 @@
-wrapper <- function(baseline_name, anomaly_file, land_or_ocean="land", output_name){
+addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="land", output_name){
   # Name of the baseline file
   # Name of the variable file
   # Name of the file to the function to apply
