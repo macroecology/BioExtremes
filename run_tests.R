@@ -1,6 +1,6 @@
 library(testthat) 
 
-source("C:/Users/gfand/OneDrive/Documentos/museum_hack/BioExtremes/frost_days.R")
+source("C:/Users/gfand/OneDrive/Documentos/museum_hack/BioExtremes/climate_index_function.R")
 
 setwd("C:/Users/gfand/OneDrive/Documentos/museum_hack/BioExtremes/tests/testthat")
 
