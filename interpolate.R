@@ -33,13 +33,13 @@ interpolate <- function(anomaly, grid, method=spline,...) {
 
 spline <- function(x, grid, ...) {
     # Wrapper function to interpolate with thin plate splines
-    # 'x' is a data.frame with 'Anom,X,Y values'
+    # 'x' is a data.frame with 'X,Y,Anom' values
     # 'grid' is a data frame with 'X,Y' values to interpolate
     # '...' extra arguments to pass to Tps function (lon.lat=T is useful)
     require(fields)
-    grd <- x[,2:3]
-    val <- x[,1]
+    grd <- x[,1:2]
+    val <- x[,3]
     fit <- Tps(grd, val, ...)
-    predict(fit, x = grid)[,1]
+    predict(fit, grid)[,1]
 }
     
