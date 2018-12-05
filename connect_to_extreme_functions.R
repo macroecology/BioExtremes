@@ -16,6 +16,7 @@ library(devtools)
 install_github('pacificclimate/climdex.pcic.ncdf', ref='release')
 library (climdex.pcic.ncdf)
 
+
 create.indices.from.files <- function(input.files, out.dir, output.filename.template, author.data, 
                                       climdex.vars.subset=NULL, 
                                       climdex.time.resolution=c("all", "annual", "monthly"), 
@@ -27,10 +28,12 @@ create.indices.from.files <- function(input.files, out.dir, output.filename.temp
                                                             r95thresh="r95thresh", r99thresh="r99thresh"),
                                       max.vals.millions=10, cluster.type="SOCK")
   
-  
+ 
 
-setwd ("C:\\Users\\sara.varela\\Documents\\CIENCIAS\\proyectos\\bioExtreme\\variables_hackathon")
-kk<- create.indices.from.files(files, "out_dir/", input.files[1], 
+setwd ("C:/Users/gfand/OneDrive/Documentos/museum_hack/BioExtremes/variables_hackaton")
+author.data <- c("gf")
+input.files <- list.files()
+kk<- create.indices.from.files(files, "out_dir2/", input.files[3], author.data,
                                 base.range=c(1991, 2000), parallel=FALSE)
 
                           #' ## Prepare input data and calculate indices for two files
@@ -44,3 +47,5 @@ kk<- create.indices.from.files(files, "out_dir/", input.files[1],
                           #'
                           #' @export
                          
+
+##########################################################3
