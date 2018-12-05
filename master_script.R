@@ -1,3 +1,4 @@
+#Download the files
 library(config)
 library(RCurl)
 ftp_host = config::get("ftp")$host
@@ -15,7 +16,11 @@ filenames <- strsplit(filenames, '\n')
 filenames <- unlist(filenames)
 filenames <- filenames[!grepl("^[.]+$",filenames)]
 # adjust foldernames, currently set to hackthon variables
+dir.create("data")
 for (filename in filenames) {
   bin <- getBinaryURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/", filename), userpwd=userpwd)
-  writeBin(bin, paste0(getwd(), "/", filename))
+  writeBin(bin, paste0(getwd(), "/data/", filename))
 }
+
+#Remap baseline on regular grid
+#
