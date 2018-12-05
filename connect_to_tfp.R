@@ -8,7 +8,7 @@ ftp_password = config::get("ftp")$password
 ## A: download a set of climatic layers stored in the FTP
 ## B: save a file in a defined folder in the FTP
 
-
+options(timeout=300)
 library(RCurl)
 url <- paste (ftp_host, "/ftpuser0063/", sep="")
 
