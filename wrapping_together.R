@@ -1,3 +1,5 @@
+#Here I do the land and measure number of frost days
+
 #Download baselines
 library(config)
 library(RCurl)
@@ -49,5 +51,11 @@ base_regrid = resample(base, l)
 
 
 #Add to baseline
+#(at this point the XY365t output is called variable)
 #Apply function
+source("frost_days.R")
+output = data.frame(x=variable$x,y=variable$y)
+output$fd = apply(variable[,-(1:2)],1,frost_days)
+output_rl = rasterfromXYZ(output)
+
 #Load output on ftp server
