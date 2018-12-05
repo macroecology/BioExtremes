@@ -1,4 +1,3 @@
-#Here I do the land and measure number of frost days
 wrapper <- function(baseline_name, variable_file, function_file, output_name){
   # Name of the baseline file
   # Name of the variable file
@@ -32,7 +31,7 @@ wrapper <- function(baseline_name, variable_file, function_file, output_name){
     stop("Variable file name does not exist on the FTP server")
   }
   bin = getBinaryURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/", filename), userpwd=userpwd)
-  writeBin(bin, paste0(getwd(), "/data/baseline/", filename))
+  writeBin(bin, paste0("/data/baseline/", filename))
 
   #Download data
   filenames <- getURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/"), userpwd = userpwd, ftp.use.epsv = FALSE, dirlistonly=TRUE)
@@ -44,11 +43,10 @@ wrapper <- function(baseline_name, variable_file, function_file, output_name){
   }else{
     stop("Variable file name does not exist on the FTP server")
   }
-  # adjust foldernames, currently set to hackthon variables
   dir.create("data/variables")
   for (filename in filenames) {
     bin <- getBinaryURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/", filename), userpwd=userpwd)
-    writeBin(bin, paste0(getwd(), "/data/variables/", filename))
+    writeBin(bin, paste0("/data/variables/", filename))
   }
 
   #Remap baseline on regular grid
@@ -58,6 +56,7 @@ wrapper <- function(baseline_name, variable_file, function_file, output_name){
   l <- mask(0.5,"land")
   base = raster(baseline)
   base_regrid = resample(base, l)
+  base_masked = raster::mask(base_regrid)
 
   #Mask and Interpolate data
 
