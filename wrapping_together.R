@@ -1,4 +1,9 @@
 #Here I do the land and measure number of frost days
+wrapper <- function(baseline_name, variable_file, function_file, output_name){
+# Name of the baseline file
+# Name of the variable file
+# Name of the file to the function to apply
+# Name of the output file
 
 #Download baselines
 library(config)
@@ -21,16 +26,24 @@ filenames <- filenames[!grepl("^[.]+$",filenames)]
 # adjust foldernames, currently set to hackthon variables
 dir.create("data")
 dir.create("data/baseline")
-for (filename in filenames) {
-  bin <- getBinaryURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/", filename), userpwd=userpwd)
-  writeBin(bin, paste0(getwd(), "/data/baseline/", filename))
+if(baseline_name%in%filenames){
+  filename = filenames[filenames==baseline_name]
+}else{
+  stop("Variable file name does not exist on the FTP server")
 }
+bin = getBinaryURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/", filename), userpwd=userpwd)
+writeBin(bin, paste0(getwd(), "/data/baseline/", filename))
 
 #Download data
 filenames <- getURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/"), userpwd = userpwd, ftp.use.epsv = FALSE, dirlistonly=TRUE)
 filenames <- strsplit(filenames, '\n')
 filenames <- unlist(filenames)
 filenames <- filenames[!grepl("^[.]+$",filenames)]
+if(variable_file%in%filenames){
+  filename = filenames[filenames==variable_file]
+}else{
+  stop("Variable file name does not exist on the FTP server")
+}
 # adjust foldernames, currently set to hackthon variables
 dir.create("data/variables")
 for (filename in filenames) {
@@ -40,10 +53,10 @@ for (filename in filenames) {
 
 #Remap baseline on regular grid
 datafiles = dir("data",full.names=TRUE,recursive=TRUE)
-baselines = datafiles[grepl("baseline/",datafiles)]
+baselines = datafiles[grepl(baseline_name,datafiles)]
 source("masking.R")
 l <- mask(0.5,"land")
-base = raster(baselines[1])
+base = raster(baselines[1]) #Here i m assuming that the baseline is the first one but I guess we need to have a way to refer to one by name in a meaningful way (same with variables)
 base_regrid = resample(base, l)
 
 #Mask and Interpolate data
@@ -51,13 +64,18 @@ base_regrid = resample(base, l)
 
 
 #Add to baseline
-#(at this point the XY365t output is called variable)
+#(at this point let's say the XY365t output is called variable)
+
 #Apply function
-source("frost_days.R")
+e=new.env()
+source(function_file, local=e) #We can t assume the name of the function inside
+func=base::get(ls(env=e),env=e) #So we do witchcraft to get it
 output = data.frame(x=variable$x,y=variable$y)
-output$fd = apply(variable[,-(1:2)],1,frost_days)
+output$fd = apply(variable[,-(1:2)],1,func)
 output_rl = rasterfromXYZ(output)
 dir.create("output")
-writeRaster(output_rl, "output/frost_days.nc","netCDF")
+writeRaster(output_rl, paste0("output/",output_name),"netCDF")
 #Load output on ftp server
 ftpUpload(I("output/frost_days.nc"), paste0("ftp://", userpwd, "@", "ftp.naturkundemuseum-berlin.de/", ftp_user, "/", foldernames[grep("hackathon", foldernames)], "/", filename))
+
+}
