@@ -57,5 +57,7 @@ source("frost_days.R")
 output = data.frame(x=variable$x,y=variable$y)
 output$fd = apply(variable[,-(1:2)],1,frost_days)
 output_rl = rasterfromXYZ(output)
-
+dir.create("output")
+writeRaster(output_rl, "output/frost_days.nc","netCDF")
 #Load output on ftp server
+ftpUpload(I("output/frost_days.nc"), paste0("ftp://", userpwd, "@", "ftp.naturkundemuseum-berlin.de/", ftp_user, "/", foldernames[grep("hackathon", foldernames)], "/", filename))
