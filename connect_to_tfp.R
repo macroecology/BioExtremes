@@ -42,5 +42,6 @@ upload <- function(origin_file, destination_file){
   ftp_user = config::get("ftp")$username
   ftp_password = config::get("ftp")$password
   options(timeout=300)
+  userpwd <- paste (ftp_user, ftp_password, sep=":")
   ftpUpload(I(origin_file), paste0("ftp://", userpwd, "@", gsub("^s?ftp://",ftp_host), ftp_user, "/", destination_file))
 }
