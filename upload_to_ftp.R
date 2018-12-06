@@ -10,5 +10,5 @@ upload <- function(origin_file, destination_folder, destination_file){
                   gsub("^s?ftp://",ftp_host),
                   ftp_user,
                   destination_folder, destination_file)
-  ftpUpload(I(origin_file), dest)
+  ftpUpload(origin_file, dest)
 }
