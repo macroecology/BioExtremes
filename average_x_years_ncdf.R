@@ -17,13 +17,20 @@ average_x_years_ncdf <- function(ftp_folder,
   files <- dir(saving_folder)
   for(i in seq_along(files)){
     r <- stack(files[i])
-    d <- as.Date(gsub("^X","",names(r)), tryFormats = c("%Y-%m-%d", "%Y/%m/%d","%Y.%m.%d"))  #Can we assume date to be in one of those formats?
+    d <- as.Date(gsub("^X","",names(r)),
+                 tryFormats = c("%Y-%m-%d", "%Y/%m/%d","%Y.%m.%d"))  #Can we assume date to be in one of those formats?
     r <- subset(r, which(d>=begin & d<=end))           #Get rid of dates outside range
     r <- subset(r, which(format(d,"%m.%d")!="02.29"))  #Get rid of 29th of february if any
     if(nlayers(r)>0) all_files[[i]] <- r
   }
+  all_files <- all_files[sapply(all_files,length)]
+  stacked <- stack(all_files)
+
   for(j in 1:365){
-    s <- stack(lapply(all_files[],function(x), x[[j]]))
+    d <- format(as.date(paste0("2015-",j),"%Y-%j"),"%m-%d") #2015 as it's a typical non-leap year
+    n <- as.Date(gsub("^X","",names(r)),
+                 tryFormats = c("%Y-%m-%d", "%Y/%m/%d","%Y.%m.%d"))
+    s <- subset(stacked, which(format(n,"%m-%d")==d))
     result[[j]] <- calc(s, mean)
   }
   out <- stack(result)
