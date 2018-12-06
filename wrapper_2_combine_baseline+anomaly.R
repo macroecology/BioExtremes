@@ -1,4 +1,4 @@
-addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="land", output_name){
+addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="land", output_name, ftp_directory_output){
   # Name of the baseline file
   # Name of the variable file
   # Name of the file to the function to apply
@@ -8,9 +8,9 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   library(config)
   library(RCurl)
   library(raster)
-  ftp_host = config::get("ftp")$host
-  ftp_user = config::get("ftp")$username
-  ftp_password = config::get("ftp")$password
+  ftp_host <- config::get("ftp")$host
+  ftp_user <- config::get("ftp")$username
+  ftp_password <- config::get("ftp")$password
   options(timeout=300)
   url <- paste (ftp_host, "/ftpuser0063/", sep="")
   userpwd <- paste (ftp_user, ftp_password, sep=":")
@@ -23,14 +23,14 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   filenames <- unlist(filenames)
   filenames <- filenames[!grepl("^[.]+$",filenames)]
   # adjust foldernames, currently set to hackthon variables
-  dir.create("data")
-  dir.create("data/baseline")
+  if(!dir.exists("data")) dir.create("data")
+  if(!dir.exists("data/baseline")) dir.create("data/baseline")
   if(baseline_name%in%filenames){
-    filename = filenames[filenames==baseline_name]
+    filename <- filenames[filenames==baseline_name]
   }else{
     stop("Variable file name does not exist on the FTP server")
   }
-  bin = getBinaryURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/", filename), userpwd=userpwd)
+  bin <- getBinaryURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/", filename), userpwd=userpwd)
   writeBin(bin, paste0("/data/baseline/", filename))
 
   #Download data
@@ -39,35 +39,40 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   filenames <- unlist(filenames)
   filenames <- filenames[!grepl("^[.]+$",filenames)]
   if(anomaly_file%in%filenames){
-    filename = filenames[filenames==anomaly_file]
+    filename <- filenames[filenames==anomaly_file]
   }else{
     stop("Anomaly file name does not exist on the FTP server")
   }
-  dir.create("data/variables")
+  if(!dir.exists("data/variables")) dir.create("data/variables")
   bin <- getBinaryURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/", filename), userpwd=userpwd)
   writeBin(bin, paste0("/data/variables/", filename))
 
   #Remap baseline on regular grid
-  datafiles = dir("data",full.names=TRUE,recursive=TRUE)
-  baseline = datafiles[grepl(baseline_file,datafiles)]
+  datafiles <- dir("data",full.names=TRUE,recursive=TRUE)
+  baseline <- datafiles[grepl(baseline_file,datafiles)]
   source("masking.R")
   l <- mask(0.5,land_or_ocean)
-  base = raster(baseline)
-  base_regrid = resample(base, l)
-  base_masked = raster::mask(base_regrid)
+  base <- raster(baseline)
+  base_regrid <- resample(base, l)
+  base_masked <- raster::mask(base_regrid)
 
-  anomaly = datafiles[grepl(anomaly_file,datafiles)]
-  ano = raster(baseline)
-  ano_regrid = resample(ano, l)
-  ano_masked = raster::mask(ano_regrid)
+  anomaly <- datafiles[grepl(anomaly_file,datafiles)]
+  ano <- raster(baseline)
+  ano_regrid <- resample(ano, l)
+  ano_masked <- raster::mask(ano_regrid)
 
   #Add anomaly to baseline
-  stack = stack(base_masked, ano_masked)
-  result = calc(stack, sum)
+  stack <- stack(base_masked, ano_masked)
+  result <- calc(stack, sum)
 
   #sAVE THE FILE
   writeRaster(result, paste0("output/",output_name),"netCDF")
   #Load output on ftp server
-  ftpUpload(I("output/frost_days.nc"), paste0("ftp://", userpwd, "@", gsub("^s?ftp://",ftp_host), ftp_user, "/", foldernames[grep("hackathon", foldernames)], "/", filename))
-
+  dest <- sprintf("ftp://%s:%s@%s/%s/%s/%s",
+                  ftp_user,ftp_password,
+                  gsub("^s?ftp://",ftp_host),
+                  ftp_user,
+                  ftp_directory_output,
+                  output_name)
+  ftpUpload(I(paste0("output/",output_name)), dest)
 }
