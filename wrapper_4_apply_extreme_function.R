@@ -1,9 +1,10 @@
-applyExtreme <- function(variable_file, function_file, output_name){
+applyExtreme <- function(variable_file, function_file, output_name, ftp_directory_output){
   # Name of the variable file
   # Name of the file to the function to apply
   # Name of the output file
 
   #Download baselines
+  source("upload_to_ftp.R")
   library(config)
   library(RCurl)
   library(raster)
@@ -41,5 +42,5 @@ applyExtreme <- function(variable_file, function_file, output_name){
   if(!dir.exists("output")) dir.create("output")
   writeRaster(output_rl, paste0("output/",output_name),"netCDF")
   #Load output on ftp server
-  ftpUpload(I("output/frost_days.nc"), paste0("ftp://", userpwd, "@", gsub("^s?ftp://",ftp_host), ftp_user, "/", foldernames[grep("hackathon", foldernames)], "/", filename))
+  upload(paste0("output/",output_name), ftp_directory_output, output_name)
 }

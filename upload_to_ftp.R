@@ -1,4 +1,4 @@
-upload <- function(origin_file, destinqtion_folder, destination_file){
+upload <- function(origin_file, destination_folder, destination_file){
   library(config)
   library(RCurl)
   ftp_host <- config::get("ftp")$host

@@ -5,6 +5,7 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   # Name of the output file
 
   #Download baselines
+  source("upload_to_ftp.R")
   library(config)
   library(RCurl)
   library(raster)
@@ -68,11 +69,5 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   #sAVE THE FILE
   writeRaster(result, paste0("output/",output_name),"netCDF")
   #Load output on ftp server
-  dest <- sprintf("ftp://%s:%s@%s/%s/%s/%s",
-                  ftp_user,ftp_password,
-                  gsub("^s?ftp://",ftp_host),
-                  ftp_user,
-                  ftp_directory_output,
-                  output_name)
-  ftpUpload(I(paste0("output/",output_name)), dest)
+  upload(paste0("output/",output_name), ftp_directory_output, output_name)
 }
