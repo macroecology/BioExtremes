@@ -34,6 +34,7 @@ average_x_years_ncdf <- function(ftp_folder_input,
     result[[j]] <- calc(s, mean)
   }
   out <- stack(result)
+  if(out$xmax==360) out <- rotate(out)
   writeRaster(result, paste0("data/",output_file),"netCDF")
   upload(output_file, ftp_folder_output, output_file) #where do we want to save it?
 }
