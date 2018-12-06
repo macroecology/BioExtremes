@@ -6,7 +6,7 @@ download <- function (foldername, saving_folder){
   ftp_password <- config::get("ftp")$password
   options(timeout=300)
   userpwd <- paste(ftp_user, ftp_password, sep=":")
-  filenames <- getURL(sprintf("%s/%s/%s", ftp_host, ftp_user, foldername),
+  filenames <- getURL(sprintf("%s/%s/%s/", ftp_host, ftp_user, foldername),
                       userpwd = userpwd,
                       ftp.use.epsv = FALSE, dirlistonly=TRUE)
   filenames <- strsplit(filenames, '\n')
@@ -16,7 +16,7 @@ download <- function (foldername, saving_folder){
   if(!dir.exists(saving_folder)) dir.create(saving_folder)
   for (filename in filenames) {
     bin <- getBinaryURL(sprintf("%s/%s/%s/%s",
-                                ftp_host, ftp_user, folder_name, filename),
+                                ftp_host, ftp_user, foldername, filename),
                         userpwd=userpwd)
     writeBin(bin, sprintf("/%s/%s", saving_folder, filename))
   }
