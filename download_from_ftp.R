@@ -5,7 +5,6 @@ download <- function (foldername, saving_folder){
   ftp_user <- config::get("ftp")$username
   ftp_password <- config::get("ftp")$password
   options(timeout=300)
-  url <- paste(ftp_host, "/ftpuser0063/", sep="")
   userpwd <- paste(ftp_user, ftp_password, sep=":")
   filenames <- getURL(sprintf("%s/%s/%s", ftp_host, ftp_user, foldername),
                       userpwd = userpwd,
