@@ -13,11 +13,11 @@ download <- function (foldername, saving_folder){
   filenames <- unlist(filenames)
   filenames <- filenames[-c(1:2)]
   # adjust foldernames, currently set to hackthon variables
-  if(!dir.exists(saving_folder)) dir.create(saving_folder)
+  if(!dir.exists(saving_folder)) dir.create(saving_folder,recursive=TRUE)
   for (filename in filenames) {
     bin <- getBinaryURL(sprintf("%s/%s/%s/%s",
                                 ftp_host, ftp_user, foldername, filename),
                         userpwd=userpwd)
-    writeBin(bin, sprintf("/%s/%s", saving_folder, filename))
+    writeBin(bin, sprintf("./%s/%s", saving_folder, filename))
   }
 }
