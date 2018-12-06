@@ -1,13 +1,13 @@
-average_x_years_ncdf <- function(ftp_folder,
+average_x_years_ncdf <- function(ftp_folder_input,
                                  year_start, year_end,
-                                 output_file){
+                                 ftp_folder_output, output_file){
   # Function to make the baseline based on content of ftp folder
   # for a specified year range
 
   #Download folder
   source("download_from_ftp.R")
   saving_folder <- paste0("data/",ftp_folder)
-  download(ftp_folder,saving_folder)
+  download(ftp_folder_input,saving_folder)
 
   begin <- as.Date(paste0(year_start,"-01-01"))
   end <- as.Date(paste0(year_end,"-12-31"))
@@ -35,5 +35,5 @@ average_x_years_ncdf <- function(ftp_folder,
   }
   out <- stack(result)
   writeRaster(result, paste0("data/",output_file),"netCDF")
-  upload(output_file, ftp_folder, output_file) #where do we want to save it?
+  upload(output_file, ftp_folder_output, output_file) #where do we want to save it?
 }
