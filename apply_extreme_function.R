@@ -1,4 +1,5 @@
 applyExtreme <- function(variable_file, function_file, output_name, ftp_directory_output){
+  # Function to apply the extreme functions to the variable (last step)
   # Name of the variable file
   # Name of the file to the function to apply
   # Name of the output file

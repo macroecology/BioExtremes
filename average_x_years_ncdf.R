@@ -14,7 +14,7 @@ average_x_years_ncdf <- function(ftp_folder_input,
   #Read all files
   all_files <- list()
   result <- list()
-  files <- dir(saving_folder)
+  files <- dir(saving_folder, full.names=TRUE)
   for(i in seq_along(files)){
     r <- stack(files[i])
     d <- as.Date(gsub("^X","",names(r)),
@@ -29,7 +29,7 @@ average_x_years_ncdf <- function(ftp_folder_input,
   for(j in 1:365){
     d <- format(as.date(paste0("2015-",j),"%Y-%j"),"%m-%d") #2015 as it's a typical non-leap year
     n <- as.Date(gsub("^X","",names(r)),
-                 tryFormats = c("%Y-%m-%d", "%Y/%m/%d","%Y.%m.%d"))
+                 tryFormats = c("%Y-%m-%d","%Y/%m/%d","%Y.%m.%d"))
     s <- subset(stacked, which(format(n,"%m-%d")==d))
     result[[j]] <- calc(s, mean)
   }
