@@ -1,6 +1,6 @@
 upload <- function(origin_file, destination_folder, destination_file){
-  library(config)
-  library(RCurl)
+  require(config)
+  require(RCurl)
   ftp_host <- config::get("ftp")$host
   ftp_user <- config::get("ftp")$username
   ftp_password <- config::get("ftp")$password
