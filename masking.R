@@ -1,10 +1,10 @@
-#This function creates a mask. 
+#This function creates a mask.
 #Possible arguments for "which" are "land", "ocean" or "landocean" depending on whether
-#one wants to produce a landmask (land=1, ocean=NA), an ocean mask (land=NA, ocean=1) 
+#one wants to produce a landmask (land=1, ocean=NA), an ocean mask (land=NA, ocean=1)
 #or a land/ocean differentiation (land=1, ocean=0).
 #It uses NaturalEarth basemap (public domain, 1:110m resolution).
 #It outputs a raster layer with the requested resolution ("cellsize").
-mask <- function(cellsize, which){
+create_mask <- function(cellsize, which){
   require(maptools)
   require(sp)
   require(raster)

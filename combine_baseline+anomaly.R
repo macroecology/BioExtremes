@@ -6,7 +6,6 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   # Name of the output file
 
   #Download
-  source("upload_to_ftp.R")
   source("download_from_ftp.R")
   require(config)
   require(RCurl)
