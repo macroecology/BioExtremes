@@ -8,8 +8,8 @@ applyExtreme <- function(variable_file, function_file, output_name, ftp_director
   source("upload_to_ftp.R")
   download(variable_file,"/data/variables/",folder=FALSE)
 
-  r <- stack(paste0("/data/variables/",variable_file)
-  variable <- melt_raster(r)
+  r <- stack(paste0("/data/variables/",variable_file))
+  variable <- stack2df(r)
   #Apply function
   e <- new.env()
   source(function_file, local=e) #We can t assume the name of the function inside,
