@@ -3,12 +3,7 @@ applyExtreme <- function(variable_file, function_file, output_name, ftp_director
   # Name of the variable file
   # Name of the file to the function to apply
   # Name of the output file
-  mat2xyz <- function(mat, lon, lat){
-    #Takes a variable matrix and 2 dimensions vectors and output a XYZ dataframe
-    lonlat = expand.grid(lon, lat)
-    sst = as.vector(mat)
-    data.frame(x=lonlat[,1], y=lonlat[,2], z=sst)
-  }
+
   #Download baselines
   require(raster)
   source("upload_to_ftp.R")

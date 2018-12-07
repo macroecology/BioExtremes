@@ -5,61 +5,25 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   # Name of the file to the function to apply
   # Name of the output file
 
-  #Download baselines
+  #Download
   source("upload_to_ftp.R")
-  library(config)
-  library(RCurl)
-  library(raster)
-  ftp_host <- config::get("ftp")$host
-  ftp_user <- config::get("ftp")$username
-  ftp_password <- config::get("ftp")$password
-  options(timeout=300)
-  url <- paste (ftp_host, "/ftpuser0063/", sep="")
-  userpwd <- paste (ftp_user, ftp_password, sep=":")
-  foldernames <- getURL(url, userpwd = userpwd, ftp.use.epsv = FALSE, dirlistonly=TRUE) # downloads folder names
-
-  foldernames <- strsplit(foldernames, '\n')
-  foldernames <- unlist(foldernames)
-  filenames <- getURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/"), userpwd = userpwd, ftp.use.epsv = FALSE, dirlistonly=TRUE)
-  filenames <- strsplit(filenames, '\n')
-  filenames <- unlist(filenames)
-  filenames <- filenames[!grepl("^[.]+$",filenames)]
-  # adjust foldernames, currently set to hackthon variables
-  if(!dir.exists("data")) dir.create("data")
-  if(!dir.exists("data/baseline")) dir.create("data/baseline")
-  if(baseline_name%in%filenames){
-    filename <- filenames[filenames==baseline_name]
-  }else{
-    stop("Variable file name does not exist on the FTP server")
-  }
-  bin <- getBinaryURL(paste0(url, foldernames[grep("present_baseline", foldernames)], "/", filename), userpwd=userpwd)
-  writeBin(bin, paste0("/data/baseline/", filename))
-
-  #Download data
-  filenames <- getURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/"), userpwd = userpwd, ftp.use.epsv = FALSE, dirlistonly=TRUE)
-  filenames <- strsplit(filenames, '\n')
-  filenames <- unlist(filenames)
-  filenames <- filenames[!grepl("^[.]+$",filenames)]
-  if(anomaly_file%in%filenames){
-    filename <- filenames[filenames==anomaly_file]
-  }else{
-    stop("Anomaly file name does not exist on the FTP server")
-  }
-  if(!dir.exists("data/variables")) dir.create("data/variables")
-  bin <- getBinaryURL(paste0(url, foldernames[grep("hackathon", foldernames)], "/", filename), userpwd=userpwd)
-  writeBin(bin, paste0("/data/variables/", filename))
+  source("download_from_ftp.R")
+  require(config)
+  require(RCurl)
+  require(raster)
+  saving1 <- paste0("data/baseline/",baseline_name)
+  download(baseline_name,saving1)
+  saving2 <- paste0("data/variables/",anomaly_file)
+  download(anomaly_file,saving2)
 
   #Remap baseline on regular grid
-  datafiles <- dir("data",full.names=TRUE,recursive=TRUE)
-  baseline <- datafiles[grepl(baseline_file,datafiles)]
   source("masking.R")
   l <- mask(0.5,land_or_ocean)
-  base <- raster(baseline)
+  base <- raster(saving1)
   base_regrid <- resample(base, l)
   base_masked <- raster::mask(base_regrid)
 
-  anomaly <- datafiles[grepl(anomaly_file,datafiles)]
-  ano <- raster(baseline)
+  ano <- raster(saving2)
   ano_regrid <- resample(ano, l)
   ano_masked <- raster::mask(ano_regrid)
 
@@ -67,8 +31,8 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   stack <- stack(base_masked, ano_masked)
   result <- calc(stack, sum)
 
-  #sAVE THE FILE
-  writeRaster(result, paste0("output/",output_name),"netCDF")
-  #Load output on ftp server
-  upload(paste0("output/",output_name), ftp_directory_output, output_name)
+  result
 }
+#writeRaster(result, paste0("output/",output_name),"netCDF")
+#Load output on ftp server
+#upload(paste0("output/",output_name), ftp_directory_output, output_name)
