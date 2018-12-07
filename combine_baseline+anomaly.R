@@ -11,9 +11,9 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
   require(RCurl)
   require(raster)
   saving1 <- paste0("data/baseline/",baseline_name)
-  download(baseline_name,saving1)
+  download(baseline_name,saving1,folder=FALSE)
   saving2 <- paste0("data/variables/",anomaly_file)
-  download(anomaly_file,saving2)
+  download(anomaly_file,saving2,folder=FALSE)
 
   #Remap baseline on regular grid
   source("masking.R")

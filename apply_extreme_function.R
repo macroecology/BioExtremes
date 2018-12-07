@@ -7,7 +7,7 @@ applyExtreme <- function(variable_file, function_file, output_name, ftp_director
   #Download baselines
   require(raster)
   source("upload_to_ftp.R")
-  download(variable_file,"/data/variables/")
+  download(variable_file,"/data/variables/",folder=FALSE)
 
   r <- stack(paste0("/data/variables/",variable_file)
   x <- rowFromCell(r[[1]],1:length(r[[1]]))
