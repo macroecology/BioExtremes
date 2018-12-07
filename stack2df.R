@@ -5,7 +5,7 @@ stack2df <- function(x, coords=TRUE) {
     if (!("RasterStack" %in% class(x)))
         stop("x must be a raster stack")
     if  (coords)
-        data.frame(coordinates(st), as.data.frame(st))
+        cbind(coordinates(x), as.data.frame(x))
     else
-        as.data.frame(st)
+        as.data.frame(x)
 }
