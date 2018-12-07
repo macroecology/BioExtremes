@@ -17,14 +17,14 @@ addAnomalyToBaseline <- function(baseline_name, anomaly_file, land_or_ocean="lan
 
   #Remap baseline on regular grid
   source("masking.R")
-  l <- mask(0.5,land_or_ocean)
+  l <- create_mask(0.5,land_or_ocean)
   base <- raster(saving1)
   base_regrid <- resample(base, l)
-  base_masked <- raster::mask(base_regrid)
+  base_masked <- mask(base_regrid)
 
   ano <- raster(saving2)
   ano_regrid <- resample(ano, l)
-  ano_masked <- raster::mask(ano_regrid)
+  ano_masked <- mask(ano_regrid)
 
   #Add anomaly to baseline
   stack <- stack(base_masked, ano_masked)
